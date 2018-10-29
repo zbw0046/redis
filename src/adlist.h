@@ -41,15 +41,15 @@ typedef struct listNode {
 
 typedef struct listIter {
     listNode *next;
-    int direction;
+    int direction; // values are defined in Macro
 } listIter;
 
 typedef struct list {
     listNode *head;
     listNode *tail;
-    void *(*dup)(void *ptr);
-    void (*free)(void *ptr);
-    int (*match)(void *ptr, void *key);
+    void *(*dup)(void *ptr); // ?
+    void (*free)(void *ptr); // free a link list
+    int (*match)(void *ptr, void *key); // return a ptr with the key=key
     unsigned long len;
 } list;
 
@@ -70,23 +70,23 @@ typedef struct list {
 #define listGetMatchMethod(l) ((l)->match)
 
 /* Prototypes */
-list *listCreate(void);
-void listRelease(list *list);
-void listEmpty(list *list);
-list *listAddNodeHead(list *list, void *value);
-list *listAddNodeTail(list *list, void *value);
-list *listInsertNode(list *list, listNode *old_node, void *value, int after);
-void listDelNode(list *list, listNode *node);
-listIter *listGetIterator(list *list, int direction);
-listNode *listNext(listIter *iter);
-void listReleaseIterator(listIter *iter);
-list *listDup(list *orig);
-listNode *listSearchKey(list *list, void *key);
-listNode *listIndex(list *list, long index);
-void listRewind(list *list, listIter *li);
-void listRewindTail(list *list, listIter *li);
-void listRotate(list *list);
-void listJoin(list *l, list *o);
+list *listCreate(void); // create a list
+void listRelease(list *list); // release a list
+void listEmpty(list *list); // empty a list
+list *listAddNodeHead(list *list, void *value); // add a value before a list
+list *listAddNodeTail(list *list, void *value); // add a value after a list
+list *listInsertNode(list *list, listNode *old_node, void *value, int after); // insert a value into the list, after/before the given old_node
+void listDelNode(list *list, listNode *node); // del a node inside the list
+listIter *listGetIterator(list *list, int direction); // get iterator of the list
+listNode *listNext(listIter *iter); // next method of list iterator
+void listReleaseIterator(listIter *iter); // release a list iterator
+list *listDup(list *orig); // duplicate a list
+listNode *listSearchKey(list *list, void *key); // search value according to the key from the list
+listNode *listIndex(list *list, long index); // get node from list using index (pos & neg)
+void listRewind(list *list, listIter *li); // /* rewind the iterator */
+void listRewindTail(list *list, listIter *li); // /* rewind the iterator */
+void listRotate(list *list); // rotate the list
+void listJoin(list *l, list *o); // append list o after the list l and merge to the new list l
 
 /* Directions for iterators */
 #define AL_START_HEAD 0

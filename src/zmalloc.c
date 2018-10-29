@@ -71,6 +71,8 @@ void zlibc_free(void *ptr) {
 #define dallocx(ptr,flags) je_dallocx(ptr,flags)
 #endif
 
+// macro function: 
+// if allocated size is not zero, incr used_memory by sizeof(long)
 #define update_zmalloc_stat_alloc(__n) do { \
     size_t _n = (__n); \
     if (_n&(sizeof(long)-1)) _n += sizeof(long)-(_n&(sizeof(long)-1)); \
@@ -98,7 +100,7 @@ static void (*zmalloc_oom_handler)(size_t) = zmalloc_default_oom;
 void *zmalloc(size_t size) {
     void *ptr = malloc(size+PREFIX_SIZE);
 
-    if (!ptr) zmalloc_oom_handler(size);
+    if (!ptr) zmalloc_oom_handler(size); // check if oom occured
 #ifdef HAVE_MALLOC_SIZE
     update_zmalloc_stat_alloc(zmalloc_size(ptr));
     return ptr;
@@ -288,7 +290,7 @@ size_t zmalloc_get_rss(void) {
         return 0;
     task_info(task, TASK_BASIC_INFO, (task_info_t)&t_info, &t_info_count);
 
-    return t_info.resident_size;
+    return t_info.resident_size; // number of resident pages 
 }
 #else
 size_t zmalloc_get_rss(void) {

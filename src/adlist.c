@@ -265,11 +265,11 @@ list *listDup(list *orig)
         if (copy->dup) {
             value = copy->dup(node->value);
             if (value == NULL) {
-                listRelease(copy);
+                listRelease(copy); // 一个node失败，全部回滚
                 return NULL;
             }
         } else
-            value = node->value;
+            value = node->value; // 注意，这里复制的时候只复制了指针。为什么？
         if (listAddNodeTail(copy, value) == NULL) {
             listRelease(copy);
             return NULL;

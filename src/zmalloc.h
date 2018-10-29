@@ -32,6 +32,8 @@
 #define __ZMALLOC_H
 
 /* Double expansion needed for stringification of macro values. */
+// refer: http://blog.51cto.com/lirui/757919
+// refer: http://vimerzhao.top/2017/03/14/C%E8%AF%AD%E8%A8%80%E5%AE%8F%E5%B1%95%E5%BC%80%E7%9A%84%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/
 #define __xstr(s) __str(s)
 #define __str(s) #s
 
@@ -57,7 +59,7 @@
 
 #elif defined(__APPLE__)
 #include <malloc/malloc.h>
-#define HAVE_MALLOC_SIZE 1
+#define HAVE_MALLOC_SIZE 1 // whether we can get malloc size from malloc lib of system
 #define zmalloc_size(p) malloc_size(p)
 #endif
 
@@ -82,13 +84,13 @@ void *zcalloc(size_t size);
 void *zrealloc(void *ptr, size_t size);
 void zfree(void *ptr);
 char *zstrdup(const char *s);
-size_t zmalloc_used_memory(void);
-void zmalloc_set_oom_handler(void (*oom_handler)(size_t));
-size_t zmalloc_get_rss(void);
+size_t zmalloc_used_memory(void); // get used memory
+void zmalloc_set_oom_handler(void (*oom_handler)(size_t)); // oom = no more free memory
+size_t zmalloc_get_rss(void); // rss = resident set size = used physical memory
 int zmalloc_get_allocator_info(size_t *allocated, size_t *active, size_t *resident);
-size_t zmalloc_get_private_dirty(long pid);
-size_t zmalloc_get_smap_bytes_by_field(char *field, long pid);
-size_t zmalloc_get_memory_size(void);
+size_t zmalloc_get_private_dirty(long pid); // ?
+size_t zmalloc_get_smap_bytes_by_field(char *field, long pid);// ?
+size_t zmalloc_get_memory_size(void); // ?
 void zlibc_free(void *ptr);
 
 #ifdef HAVE_DEFRAG
